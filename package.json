@@ -2,6 +2,7 @@
   "name": "shiki-renderer-canvas",
   "version": "1.0.0",
   "description": "Canvas (node or browser) renderer for Shiki",
+  "main": "dist/index.js",
   "scripts": {
     "test": "mocha -b -r ts-node/register test/**/*.ts",
     "build": "tsc",
