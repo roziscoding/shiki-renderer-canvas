@@ -2,6 +2,7 @@
   "compilerOptions": {
     "lib": [
       "DOM",
+      "ES2015"
     ],
     "incremental": true,
     "target": "es6",
