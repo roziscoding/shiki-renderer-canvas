@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "lib": [
+      "DOM",
+    ],
     "incremental": true,
     "target": "es6",
     "module": "commonjs",
