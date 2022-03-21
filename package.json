@@ -1,6 +1,6 @@
 {
   "name": "shiki-renderer-canvas",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Canvas (node or browser) renderer for Shiki",
   "main": "dist/index.js",
   "scripts": {
