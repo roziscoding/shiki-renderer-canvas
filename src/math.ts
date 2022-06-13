@@ -10,11 +10,12 @@ export function getAbsoluteWidth(metrics: TextMetrics) {
 export function getLongestLineLength(
   ctx: CanvasRenderingContext2D,
   lines: shiki.IThemedToken[][],
-  fontSize: number
+  fontSize: number,
+  fontFamily: string
 ) {
   const previousFont = `${ctx.font}`
   const previousTextBaseline = `${ctx.textBaseline}` as CanvasTextBaseline
-  ctx.font = `${fontSize}px monospace`
+  ctx.font = `${fontSize}px ${fontFamily}`
   ctx.textBaseline = 'top'
 
   const textLineLengths = lines
@@ -30,13 +31,14 @@ export function getLongestLineLength(
 export function getLineHeight(
   ctx: CanvasRenderingContext2D,
   fontSize: number,
+  fontFamily: string,
   text: string | shiki.IThemedToken[] = 'M'
 ) {
   const previousFont = `${ctx.font}`
   const previousTextBaseline = `${ctx.textBaseline}` as CanvasTextBaseline
   const line = Array.isArray(text) ? text.map((t) => t.content).join('') : text
 
-  ctx.font = `${fontSize}px monospace`
+  ctx.font = `${fontSize}px ${fontFamily}`
   ctx.textBaseline = 'top'
 
   const measurements = ctx.measureText(line)
@@ -52,10 +54,11 @@ export function getLineHeight(
 export function getTextHeight(
   ctx: CanvasRenderingContext2D,
   fontSize: number,
+  fontFamily: string,
   lines: shiki.IThemedToken[][]
 ) {
   return lines.reduce((result, line) => {
     const lineContent = line.map((token) => token.content).join('')
-    return result + getLineHeight(ctx, fontSize, lineContent)
+    return result + getLineHeight(ctx, fontSize, fontFamily, lineContent)
   }, 0)
 }

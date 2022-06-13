@@ -5,18 +5,9 @@ import { DeepPartial } from './DeepPartial'
 import { getLineHeight, getLongestLineLength, getTextHeight } from './math'
 import { drawBoundingBox } from './pencil'
 
-type Options = {
-  fontSize: number
-  padding: {
-    vertical: number
-    horizontal: number
-  }
-  backgroundColor: string
-  drawPaddingLines: boolean
-}
-
-const DEFAULT_OPTIONS: Options = {
+const DEFAULT_OPTIONS = {
   fontSize: 20,
+  fontFamily: 'monospace',
   padding: {
     vertical: 20,
     horizontal: 20
@@ -25,23 +16,30 @@ const DEFAULT_OPTIONS: Options = {
   drawPaddingLines: false
 }
 
+export type CanvasRendererOptions = typeof DEFAULT_OPTIONS
+
 export function getCanvasRenderer<TCanvas extends HTMLCanvasElement | Canvas>(
   canvas: TCanvas,
-  options: DeepPartial<Options> = {}
+  options: DeepPartial<CanvasRendererOptions> = {}
 ) {
   const config = merge(DEFAULT_OPTIONS, options)
-  const { fontSize, padding, backgroundColor } = config
+  const { fontSize, fontFamily, padding, backgroundColor } = config
 
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
   if (!ctx) throw new Error('no canvas context')
 
   return {
     renderToCanvas(tokens: shiki.IThemedToken[][]) {
-      const longestLineLength = getLongestLineLength(ctx, tokens, fontSize)
+      const longestLineLength = getLongestLineLength(
+        ctx,
+        tokens,
+        fontSize,
+        fontFamily
+      )
 
       canvas.width = longestLineLength + padding.horizontal * 2
       canvas.height =
-        getTextHeight(ctx, fontSize, tokens) + padding.vertical * 2
+        getTextHeight(ctx, fontSize, fontFamily, tokens) + padding.vertical * 2
 
       ctx.fillStyle = backgroundColor
       ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -54,7 +52,7 @@ export function getCanvasRenderer<TCanvas extends HTMLCanvasElement | Canvas>(
         let x = padding.horizontal
 
         for (const token of line) {
-          ctx.font = `${fontSize}px monospace`
+          ctx.font = `${fontSize}px ${fontFamily}`
           ctx.textBaseline = 'top'
           ctx.fillStyle = token.color || '#fff'
           ctx.fillText(token.content, x, y)
@@ -62,7 +60,7 @@ export function getCanvasRenderer<TCanvas extends HTMLCanvasElement | Canvas>(
           x += ctx.measureText(token.content).width
         }
 
-        y += getLineHeight(ctx, fontSize, line)
+        y += getLineHeight(ctx, fontSize, fontFamily, line)
       }
 
       return canvas

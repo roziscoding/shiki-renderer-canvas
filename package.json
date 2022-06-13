@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "mocha -b -r ts-node/register test/**/*.ts",
+    "sample": "ts-node generate-sample.ts",
     "build": "tsc",
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "build:clean": "npm run clean && npm run build",

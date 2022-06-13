@@ -12,6 +12,21 @@ npm i shiki-renderer-canvas
 
 ## Usage
 
+### Custom Fonts
+
+You can use any font you want by passing the `fontFamily` config.
+
+Keep in mind that the font must be accesible to the canvas instance.
+
+For the browser, the font should be locally installed, and for Node.js, the font should be 
+[registered](https://github.com/Automattic/node-canvas/#registerfont) in `node-canvas` **before calling `createCanvas`**.
+
+An example of how to register a font in Node.js is available at the [generate-sample.ts](./generate-sample.ts) file.
+
+> ⚠️ Important ⚠️: Although `node-canvas` docs say that `registerFont` is only necessary for fonts not installed in
+> the system, I found it to be quite hard to get those to work. The best approach for custom fonts in Node.js is to
+> always register them with `node-canvas`.
+
 ### Node.js
 
 ```typescript
